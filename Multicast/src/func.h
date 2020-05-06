@@ -1,5 +1,5 @@
-#ifndef _BROADCAST_FUNC
-#define _BROADCAST_FUNC
+#ifndef _MULTICAST_FUNC
+#define _MULTICAST_FUNC
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,6 +12,7 @@
 #include <netinet/in.h>
 #include <netinet/ip.h> 
 
+#define IP_MULTICAST "224.0.0.1"
 #define PORT 7777
 #define BUFSIZE 100
 #define BACKLOG 5

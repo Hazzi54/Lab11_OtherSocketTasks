@@ -8,7 +8,7 @@ int main(int argc, char *argv[]) {
     struct sockaddr_in broad_addr;
     broad_addr.sin_family = AF_INET;
     broad_addr.sin_port = htons(PORT);
-    broad_addr.sin_addr.s_addr = inet_addr(IP);
+    broad_addr.sin_addr.s_addr = INADDR_BROADCAST;
 
     int val = 1;
     if(setsockopt(sock, SOL_SOCKET, SO_BROADCAST, &val, sizeof(val)) == -1)
