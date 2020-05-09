@@ -14,8 +14,6 @@
 
 #define PORT 7777
 #define BUFSIZE 100
-#define BACKLOG 5
-#define NUM_THREADS 16
 
 void handle_error(char *);
 
