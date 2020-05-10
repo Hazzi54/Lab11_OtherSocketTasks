@@ -17,9 +17,10 @@
 #define PORT 7777
 #define RAW_PORT 7000
 #define BUFSIZE 100
-#define MAXSIZE 0xFF
+#define MAXSIZE 0xFFFF
 
 void handle_error(char *);
 void fill_header_transp(char *, int);
+void fill_header_ip(char *, int);
 
 #endif
