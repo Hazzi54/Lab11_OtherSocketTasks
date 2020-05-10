@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
     while(1) {
         if(recvfrom(sock, buf2, MAXSIZE, 0, (struct sockaddr *)&receiver, &sizeAddr) == -1)
             handle_error("recvfrom");
-        pShort = buf2;
+        pShort = (short int *)buf2;
         pShort += 11;
         if(ntohs(*pShort) == RAW_PORT)
             break;

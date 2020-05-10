@@ -26,7 +26,7 @@ struct header_mask_ip {
 };
 
 void fill_header_transp(char *buf, int size) {
-    struct header_mask_udp *m = buf;
+    struct header_mask_udp *m = (struct header_mask_udp *)buf;
     m->src = htons(RAW_PORT);
     m->dest = htons(PORT);
     m->len = htons(size);
@@ -34,7 +34,7 @@ void fill_header_transp(char *buf, int size) {
 }
 
 void fill_header_ip(char *buf, int size) {
-    struct header_mask_ip *m = buf;
+    struct header_mask_ip *m = (struct header_mask_ip *)buf;
     m->verIHL = 0x45;
     m->DS = 0;
     m->len = htons(size);
