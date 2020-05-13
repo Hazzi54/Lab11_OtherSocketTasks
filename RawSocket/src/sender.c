@@ -1,29 +1,35 @@
 #include "func.h"
 
 int main(int argc, char *argv[]) {
-    int sock = socket(AF_INET, SOCK_RAW, IPPROTO_UDP);
+    int sock = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
     if(sock == -1)
         handle_error("socket");
 
-    struct sockaddr_in receiver;
-    receiver.sin_family = AF_INET;
-    receiver.sin_port = htons(PORT);
-    receiver.sin_addr.s_addr = inet_addr(IP);
+    struct sockaddr_ll receiver;
+    memset(&receiver, 0, sizeof(struct sockaddr_ll));
+    receiver.sll_family = AF_PACKET;
+    receiver.sll_ifindex = if_nametoindex("wlan0");
+    receiver.sll_halen = ETH_ALEN;
 
-    int val = 1;
+    /*receiver.sin_port = htons(PORT);
+    receiver.sin_addr.s_addr = inet_addr(IP);*/
+
+    /*int val = 1;
     if(setsockopt(sock, IPPROTO_IP, IP_HDRINCL, &val, sizeof(val)) == -1)
-        handle_error("setsockopt");
+        handle_error("setsockopt");*/
     
     char buff[MAXSIZE];
     memset(buff, 0, MAXSIZE);
     char *ptr = buff;
-    fill_header_ip(ptr, MAXSIZE);
+    fill_header_eth(ptr);
+    ptr += 14;
+    fill_header_ip(ptr, MAXSIZE - 14);
     ptr += 20;
-    fill_header_transp(ptr, MAXSIZE - 20);
+    fill_header_transp(ptr, MAXSIZE - 34);
     ptr += 8;
-    fgets(ptr, MAXSIZE - 28, stdin);
+    fgets(ptr, MAXSIZE - 42, stdin);
 
-    socklen_t sizeAddr = sizeof(struct sockaddr_in);
+    socklen_t sizeAddr = sizeof(struct sockaddr_ll);
     if(sendto(sock, buff, sizeof(buff), 0, (struct sockaddr *)&receiver, sizeAddr) == -1)
         handle_error("sendto");
 
