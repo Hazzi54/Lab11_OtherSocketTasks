@@ -10,13 +10,6 @@ int main(int argc, char *argv[]) {
     receiver.sll_family = AF_PACKET;
     receiver.sll_ifindex = if_nametoindex("wlan0");
     receiver.sll_halen = ETH_ALEN;
-
-    /*receiver.sin_port = htons(PORT);
-    receiver.sin_addr.s_addr = inet_addr(IP);*/
-
-    /*int val = 1;
-    if(setsockopt(sock, IPPROTO_IP, IP_HDRINCL, &val, sizeof(val)) == -1)
-        handle_error("setsockopt");*/
     
     char buff[MAXSIZE];
     memset(buff, 0, MAXSIZE);
@@ -34,18 +27,18 @@ int main(int argc, char *argv[]) {
         handle_error("sendto");
 
     char buf2[MAXSIZE];
-    short int *pShort;
+    unsigned short *pShort;
     while(1) {
         if(recvfrom(sock, buf2, MAXSIZE, 0, (struct sockaddr *)&receiver, &sizeAddr) == -1)
             handle_error("recvfrom");
-        pShort = (short int *)buf2;
-        pShort += 11;
+        pShort = (unsigned short *)buf2;
+        pShort += 18;
         if(ntohs(*pShort) == RAW_PORT)
             break;
     }
     
     char *ptr_string = buf2, msg[strlen(buf2 - 8)];
-    ptr_string += 28;
+    ptr_string += 42;
     strcpy(msg, ptr_string);
     puts(msg);
     shutdown(sock, SHUT_RDWR);

@@ -76,26 +76,13 @@ void fill_header_eth(char *buf) {
 
 short int checkSum(char *buf) {
     int sum = 0;
-    short int *ptr = (short int *)buf, i = 0;
+    unsigned short *ptr = (unsigned short *)buf, i = 0;
     while(i < 10) {
         sum += *ptr;
         ptr++;
         i++;
     }
-    int tmp;
-    short int result;
-    ptr = (short int *)&sum;
-    result = *ptr;
-    if(sum > 0xFFFF) {
-        tmp = sum >> 16;
-        sum = result + tmp;
-        if(sum > 0xFFFF) {
-            tmp = sum >> 16;
-            ptr = (short int *)&sum;
-            result = *ptr + tmp;
-        }
-        else
-            result = sum;
-    }
-    return ~result;
+    sum = (sum >> 16) + (sum & 0xFFFF);
+    sum += (sum >> 16);
+    return ~sum;
 }

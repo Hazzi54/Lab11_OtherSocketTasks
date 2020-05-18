@@ -1,7 +1,7 @@
 #include "func.h"
 
 int main(int argc, char *argv[]) {
-    int sock = socket(AF_INET, SOCK_DGRAM, 0);
+    int sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     struct sockaddr_in sender, receiver;
 
     if(sock == -1)
@@ -30,6 +30,7 @@ int main(int argc, char *argv[]) {
         buf[i] = toupper((unsigned char) buf[i]);
         i++;
     }
+    puts(buf);
         
     if(sendto(sock, buf, numBytes, 0, (struct sockaddr *) &sender, size_addr) != numBytes)
         handle_error("sendto");
